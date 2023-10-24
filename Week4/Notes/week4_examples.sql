@@ -121,3 +121,8 @@ VALUES
 INSERT INTO week4examples.products (product_name, category_id)
 VALUES
 	('Unknown', 2);
+	
+	
+	
+	
+	

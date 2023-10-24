@@ -14,6 +14,12 @@ Create a mongo_db connection with pymongo to your database
 https://pymongo.readthedocs.io/en/stable/examples/authentication.html
 """
 
+#https://pymongo.readthedocs.io/en/stable/examples/authentication.html
+#create your connection string
+connect_string = ""
+#create a connection to your Atlas cluster
+
+
 """
 Exercise 2
 Using your client created from exercise 1, connect to a new database, homework6. 
@@ -21,6 +27,8 @@ Once you have connected to the database set your collection to a new collection,
 https://pymongo.readthedocs.io/en/stable/tutorial.html --> getting database and getting collection
 
 """
+
+
 
 """
 Exercise 3
@@ -53,6 +61,7 @@ student_data = [
     ]
 
 
+
 """
 Exercise 4
 What MongoDB type do Python lists get converted to? 
@@ -80,6 +89,7 @@ Note: Many not one. Push not pull.
 """
 
 
+
 """
 Exercise 7
 The college has decided that Chemistry was not a good fit for the data science program. Delete it from the collection. 
@@ -87,12 +97,13 @@ https://www.geeksforgeeks.org/python-mongodb-delete_one/
 """
 
 
+
 """
 Exercise 8
 Using find, print all of the documents to the console. This should be a query against the MongoDB database.
 """
 
-
+    
 """
 Exercise 9
 Instead of using the default hash _id, what would you recommend as a unique ID for each document?
@@ -103,5 +114,4 @@ Instead of using the default hash _id, what would you recommend as a unique ID f
 Exercise 10
 Drop the students collection from the database AND close your client. 
 """
-
 

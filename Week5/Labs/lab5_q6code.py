@@ -9,18 +9,27 @@ Lab question 6 sample code
 import pymongo
 
 #create your connection string
-connect_string = ""
+connect_string = 
 #create a connection to your Atlas cluster
 client = pymongo.MongoClient(connect_string)
 
 #connect to the sample_restaraunts database
-db = client.sample_restaurants
+restaurants_db = client.sample_restaurants
 
 #establish a connection to the restarants collection
-my_collection = db["restaurants"]
+rest_coll = restaurants_db["restaurants"]
 
 #find a document with the restaraunt name Nordic Delicacies
-nordic = my_collection.find_one({"name": "Nordic Delicacies"})
+nordic = rest_coll.find_one({"name": "Nordic Delicacies"})
 
 #find the type of the queried document
 type(nordic)
+
+
+db = client.sample_airbnb
+collection = db['listingsAndReviews']
+
+test = collection.find{'bedrooms':{'$gte':10}})
+
+
+test = my_collection.find()
