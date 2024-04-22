@@ -1,2 +1,2 @@
-# DSE6210
+# DSE6210: SQL & NoSQL
  
