@@ -101,3 +101,19 @@ VALUES (1,102,4,'2017-03-14 01:59:26','2017-03-15 11:01:54',103),
 (4,104,3,'2020-03-14 01:59:26','2020-03-15 11:01:54',302),
 (5,105,4,'2016-03-14 01:59:26','2016-03-15 11:01:54',104),
 (6,104,5,'2018-03-14 01:59:26','2018-03-15 11:01:54',102);
+
+-- Question 1
+SELECT * FROM hotels.hotel;
+
+-- Question 2
+SELECT * FROM hotels.hotel WHERE hotel.hotelCity='New York';
+
+-- Question 3
+SELECT *
+FROM hotels.hotel
+JOIN hotels.booking
+ON hotel.hotelNo = booking.hotelNo
+JOIN hotels.guest
+ON booking.guestNo = guest.guestNo
+WHERE hotel.hotelCity = 'New York'
+ORDER BY lastname DESC;
