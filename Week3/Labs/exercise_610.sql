@@ -73,7 +73,6 @@ CREATE TABLE IF NOT EXISTS company.dependent (
 	Sex VARCHAR,
 	Bdate DATE NOT NULL,
 	Relationship VARCHAR NOT NULL,
-	PRIMARY KEY (Dependent_name),
 	FOREIGN KEY (Essn) REFERENCES company.employee(Ssn) ON UPDATE CASCADE ON DELETE CASCADE
 );
 
@@ -93,8 +92,6 @@ VALUES
 ('John', 'B','Smith', 123456789, '1965-01-09', '731 Fondren, Houston, TX','M', 30000, NULL, 5),
 ('Ramesh','K','Narayan',666884444,'1962-09-15','975 Fire Oak, Humble, TX','M',38000,NULL,5),
 ('Joyce','A','English',453453453,'1972-07-31','5631 Rice, Houston, TX','F',25000,NULL,4);
-
-SELECT * FROM company.employee
 
 UPDATE company.department SET Mgr_ssn = 333445555 WHERE Dnumber=5;
 UPDATE company.department SET Mgr_ssn = 987654321 WHERE Dnumber=4;
@@ -139,3 +136,13 @@ VALUES
 (987654321,30,20.0),
 (987654321,20,15.0),
 (888665555,20,NULL);
+
+INSERT INTO company.dependent
+VALUES
+(333445555,'Alice','F','1986-04-05','Daughter'),
+(333445555,'Theordore','M','1983-10-25','Son'),
+(333445555,'Joy','F','1958-05-03','Spouse'),
+(987654321,'Abner','M','1942-02-28','Spouse'),
+(123456789,'Michael','M','1988-01-04','Son'),
+(123456789,'Alice','F','1988-12-30','Daughter'),
+(123456789,'Elizabeth','F','1967-05-05','Spouse');
