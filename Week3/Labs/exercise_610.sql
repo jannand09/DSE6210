@@ -20,8 +20,7 @@ CREATE TABLE IF NOT EXISTS company.employee (
 	Super_ssn VARCHAR,
 	Dno INT,
 	PRIMARY KEY (Ssn),
-	FOREIGN KEY (Super_ssn) REFERENCES company.employee(Ssn) ON DELETE SET NULL ON CASCADE UPDATE
-	FOREIGN KEY (Dno) REFERENCES company.department(Dnumber) ON DELETE SET NULL ON CASCADE UPDATE
+	FOREIGN KEY (Super_ssn) REFERENCES company.employee(Ssn) ON DELETE SET NULL ON UPDATE CASCADE
 );
 
 CREATE TABLE IF NOT EXISTS company.department (
@@ -30,11 +29,42 @@ CREATE TABLE IF NOT EXISTS company.department (
 	Mgr_ssn VARCHAR,
 	Mgr_start_date DATE,
 	PRIMARY KEY (Dnumber),
-	FOREIGN KEY (Mgr_ssn) REFERENCES company.employee(Ssn) ON DELETE SET NULL ON CASCADE UPDATE
+	FOREIGN KEY (Mgr_ssn) REFERENCES company.employee(Ssn) ON DELETE SET NULL ON UPDATE CASCADE
 );
+
+ALTER TABLE IF EXISTS company.employee
+ADD FOREIGN KEY (Dno) REFERENCES company.department(Dnumber) ON DELETE SET NULL ON UPDATE CASCADE;
 
 CREATE TABLE IF NOT EXISTS company.dept_locations (
 	Dnumber INT NOT NULL,
 	Dlocation VARCHAR NOT NULL,
 	FOREIGN KEY (Dnumber) REFERENCES company.department(Dnumber)
 );
+
+CREATE TABLE IF NOT EXISTS company.project (
+	Pname VARCHAR NOT NULL,
+	Pnumber INT NOT NULL,
+	Plocation VARCHAR NOT NULL,
+	Dnum INT NOT NULL,
+	PRIMARY KEY (Pnumber),
+	FOREIGN KEY (Dnum) REFERENCES company.department(Dnumber) ON UPDATE CASCADE ON DELETE SET NULL
+);
+
+CREATE TABLE IF NOT EXISTS company.works_on (
+	Essn VARCHAR NOT NULL,
+	Pno INT NOT NULL,
+	Hours INT,
+	FOREIGN KEY (Essn) REFERENCES company.employee(Ssn) ON UPDATE CASCADE,
+	FOREIGN KEY (Pno) REFERENCES company.project(Pnumber) ON UPDATE CASCADE
+);
+
+CREATE TABLE IF NOT EXISTS company.dependent (
+	Essn VARCHAR NOT NULL,
+	Dependent_name VARCHAR NOT NULL,
+	Sex VARCHAR,
+	Bdate DATE NOT NULL,
+	Relationship VARCHAR NOT NULL,
+	PRIMARY KEY (Dependent_name),
+	FOREIGN KEY (Essn) REFERENCES company.employee(Ssn) ON UPDATE CASCADE ON DELETE CASCADE
+);
+
