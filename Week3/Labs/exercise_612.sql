@@ -132,3 +132,25 @@ JOIN university.grade_report ON student.Student_number=grade_report.Student_numb
 JOIN university.section ON section.Section_identifier=grade_report.Section_identifier
 JOIN university.course ON course.Course_number=section.Course_number
 WHERE student.Student_class=1 AND student.Major='MATH';
+
+--- Question 6.13
+
+---Part A
+INSERT INTO university.course (Course_name,Course_number,Credit_hours,Department)
+VALUES
+('Financial Accounting','FAC4390',5,'BUSINESS');
+
+---Part B
+INSERT INTO university.section
+VALUES
+(145,'FAC4390','Fall','17','Hanif');
+
+---Part C
+INSERT INTO university.student
+VALUES
+('Robin',34,2,'BUSINESS');
+
+---Part D
+UPDATE university.student
+SET Student_class = 3
+WHERE Student_number = 17;
