@@ -54,10 +54,12 @@ CREATE TABLE IF NOT EXISTS university.prequisite (
 );
 
 INSERT INTO university.student
+VALUES
 ('Smith',17,1,'CS'),
 ('Brown',8,2,'CS');
 
 INSERT INTO university.course
+VALUES
 ('Intro to Computer Science','CS1310',4,'CS'),
 ('Data Structures','CS3320',4,'CS'),
 ('Discrete Mathematics','MATH3320',3,'MATH'),
@@ -72,6 +74,7 @@ INSERT INTO university.section
 (135,'CS3380','Fall','08','Stone');
 
 INSERT INTO university.grade_report
+VALUES
 (17,112,'B'),
 (17,119,'C'),
 (8,85,'A'),
@@ -80,6 +83,7 @@ INSERT INTO university.grade_report
 (8,135,'A');
 
 INSERT INTO university.prerequisite
+VALUES
 ('CS3380','CS3320'),
 ('CS3380','MATH2410'),
 ('CS3320','CS1310');
