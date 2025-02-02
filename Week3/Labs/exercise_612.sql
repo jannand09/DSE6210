@@ -1,8 +1,8 @@
 ALTER TABLE IF EXISTS university.section DROP CONSTRAINT IF EXISTS section_course_number_fkey;
 ALTER TABLE IF EXISTS university.grade_report DROP CONSTRAINT IF EXISTS grade_report_student_number_fkey;
 ALTER TABLE IF EXISTS university.grade_report DROP CONSTRAINT IF EXISTS grade_report_section_identifier_fkey;
-ALTER TABLE IF EXISTS university.prequisite DROP CONSTRAINT IF EXISTS grade_report_course_number_fkey;
-ALTER TABLE IF EXISTS university.prequisite DROP CONSTRAINT IF EXISTS grade_report_prequisite_number_fkey;
+ALTER TABLE IF EXISTS university.prerequisite DROP CONSTRAINT IF EXISTS grade_report_course_number_fkey;
+ALTER TABLE IF EXISTS university.prerequisite DROP CONSTRAINT IF EXISTS grade_report_prequisite_number_fkey;
 
 DROP TABLE IF EXISTS university.student;
 DROP TABLE IF EXISTS university.course;
@@ -23,7 +23,7 @@ CREATE TABLE IF NOT EXISTS university.course (
 
 CREATE TABLE IF NOT EXISTS university.student (
 	Student_name VARCHAR NOT NULL,
-	Student_number VARCHAR NOT NULL,
+	Student_number INT NOT NULL,
 	Student_class INT,
 	Major VARCHAR,
 	PRIMARY KEY (Student_number)
@@ -47,10 +47,11 @@ CREATE TABLE IF NOT EXISTS university.grade_report (
 	FOREIGN KEY (Section_identifier) REFERENCES university.section(Section_identifier) ON UPDATE CASCADE
 );
 
-CREATE TABLE IF NOT EXISTS university.prequisite (
-	Course_number VARHCAR NOT NULL,
+CREATE TABLE IF NOT EXISTS university.prerequisite (
+	Course_number VARCHAR NOT NULL,
 	Prequisite_number VARCHAR,
-	FOREIGN KEY (Course_number,Prequisite_number) REFERENCES university.course(Course_number) ON UPDATE CASCADE ON DELETE CASCADE
+	FOREIGN KEY (Course_number) REFERENCES university.course(Course_number) ON UPDATE CASCADE ON DELETE CASCADE,
+	FOREIGN KEY (Prequisite_number) REFERENCES university.course(Course_number) ON UPDATE CASCADE ON DELETE CASCADE
 );
 
 INSERT INTO university.student
@@ -62,7 +63,7 @@ INSERT INTO university.course
 VALUES
 ('Intro to Computer Science','CS1310',4,'CS'),
 ('Data Structures','CS3320',4,'CS'),
-('Discrete Mathematics','MATH3320',3,'MATH'),
+('Discrete Mathematics','MATH2410',3,'MATH'),
 ('Database','CS3380',3,'CS');
 
 INSERT INTO university.section
@@ -88,3 +89,5 @@ VALUES
 ('CS3380','CS3320'),
 ('CS3380','MATH2410'),
 ('CS3320','CS1310');
+
+SELECT * FROM university.course
