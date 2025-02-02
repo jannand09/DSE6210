@@ -25,7 +25,7 @@ CREATE TABLE IF NOT EXISTS company.employee (
 	Bdate VARCHAR NOT NULL,
 	Address VARCHAR NOT NULL,
 	Sex VARCHAR NOT NULL,
-	Salary VARCHAR NOT NULL,
+	Salary INT NOT NULL,
 	Super_ssn INT,
 	Dno INT,
 	PRIMARY KEY (Ssn),
@@ -91,7 +91,7 @@ VALUES
 ('Franklin', 'T','Wong',333445555, '1955-12-08', '638 Voss, Houston, TX', 'M', 40000,NULL, 5),
 ('John', 'B','Smith', 123456789, '1965-01-09', '731 Fondren, Houston, TX','M', 30000, NULL, 5),
 ('Ramesh','K','Narayan',666884444,'1962-09-15','975 Fire Oak, Humble, TX','M',38000,NULL,5),
-('Joyce','A','English',453453453,'1972-07-31','5631 Rice, Houston, TX','F',25000,NULL,4);
+('Joyce','A','English',453453453,'1972-07-31','5631 Rice, Houston, TX','F',25000,NULL,5);
 
 UPDATE company.department SET Mgr_ssn = 333445555 WHERE Dnumber=5;
 UPDATE company.department SET Mgr_ssn = 987654321 WHERE Dnumber=4;
@@ -146,3 +146,36 @@ VALUES
 (123456789,'Michael','M','1988-01-04','Son'),
 (123456789,'Alice','F','1988-12-30','Daughter'),
 (123456789,'Elizabeth','F','1967-05-05','Spouse');
+
+--- Question 6.10
+
+---Part A
+SELECT
+	employee.Fname
+	,employee.Minit
+	,employee.Lname
+FROM company.employee
+JOIN company.works_on ON employee.Ssn=works_on.Essn
+JOIN company.project ON works_on.Pno=project.Pnumber
+WHERE employee.Salary>=3000 AND employee.Dno=5 AND project.Pname='ProductX'
+;
+
+---Part B
+SELECT
+	employee.Fname
+	,employee.Minit
+	,employee.Lname
+FROM company.employee
+WHERE employee.Address LIKE '%Houston%' AND employee.Super_ssn=333445555
+;
+
+---Part C
+SELECT
+	employee.Fname
+	,employee.Minit
+	,employee.Lname
+FROM company.employee
+JOIN company.works_on ON employee.Ssn=works_on.Essn
+JOIN company.project ON works_on.Pno=project.Pnumber
+WHERE project.Pname='Computerization'
+;
