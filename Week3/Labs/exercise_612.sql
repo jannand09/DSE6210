@@ -66,6 +66,7 @@ VALUES
 ('Database','CS3380',3,'CS');
 
 INSERT INTO university.section
+VALUES
 (85,'MATH2410','Fall','07','King'),
 (92,'CS1310','Fall','07','Anderson'),
 (102,'CS3320','Spring','08','Knuth'),
