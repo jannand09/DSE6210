@@ -90,4 +90,45 @@ VALUES
 ('CS3380','MATH2410'),
 ('CS3320','CS1310');
 
-SELECT * FROM university.course
+---Question 6.12
+
+--- Part A
+SELECT Course_name
+FROM university.course
+WHERE Department='CS';
+
+---Part B
+SELECT course.Course_name, section.Instructor
+FROM university.course
+JOIN university.section
+ON course.Course_number=section.Course_number
+WHERE section.Semester='Fall' AND section.Section_year='08'
+ORDER BY Course_name;
+
+---Part C
+SELECT
+	section.Course_number
+	,section.Semester
+	,section.Section_year
+	,grade_report.Student_number
+	,COUNT(*) 
+FROM university.section
+JOIN university.grade_report
+ON section.Section_identifier=grade_report.Section_identifier
+WHERE section.Instructor='Anderson'
+GROUP BY section.Course_number,section.Semester,section.Section_year
+;
+
+---Part D
+SELECT
+	student.Student_name
+	,course.Course_name
+	,section.Course_number
+	,section.Semester
+	,section.Section_year
+	,grade_report.Grade
+FROM university.student
+JOIN university.grade_report ON student.Student_number=grade_report.Student_number
+JOIN university.section ON section.Section_identifier=grade_report.Section_identifier
+JOIN university.course ON course.Course_number=section.Course_number
+WHERE student.Student_class=1 AND student.Major='MATH';
