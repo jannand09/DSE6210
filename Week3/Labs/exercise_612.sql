@@ -110,7 +110,6 @@ SELECT
 	section.Course_number
 	,section.Semester
 	,section.Section_year
-	,grade_report.Student_number
 	,COUNT(*) 
 FROM university.section
 JOIN university.grade_report
