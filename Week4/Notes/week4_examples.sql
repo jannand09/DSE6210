@@ -63,6 +63,11 @@ VALUES
     (19, 'Rishabh Pant', 8),
     (20, 'Sanju Samson', 8);
 
+---Products table
+SELECT * FROM week4examples.products;
+---Categories table
+SELECT * FROM week4examples.categories;
+
 --natural join
 SELECT * FROM week4examples.products
 NATURAL JOIN week4examples.categories;
