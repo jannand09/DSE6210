@@ -179,3 +179,26 @@ JOIN company.works_on ON employee.Ssn=works_on.Essn
 JOIN company.project ON works_on.Pno=project.Pnumber
 WHERE project.Pname='Computerization'
 ;
+
+---Week 4 Discussion example
+WITH five_emps AS (
+	SELECT Dno, COUNT(*)
+	FROM company.employee
+	JOIN company.department ON employee.Dno=department.Dnumber
+	GROUP BY employee.Dno
+	HAVING COUNT(*)>2
+)
+SELECT Dname, COUNT(*)
+FROM company.employee
+JOIN company.department ON employee.Dno=department.Dnumber
+WHERE employee.Salary>30000 AND employee.Dno IN (select Dno FROM five_emps)
+GROUP BY department.Dname
+;
+
+
+-- SELECT Dno
+-- 	FROM company.employee
+-- 	JOIN company.department ON employee.Dno=department.Dnumber
+-- 	GROUP BY employee.Dno
+-- 	HAVING COUNT(*)>2
+-- 	;
