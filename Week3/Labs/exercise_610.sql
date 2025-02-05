@@ -196,9 +196,11 @@ GROUP BY department.Dname
 ;
 
 
--- SELECT Dno
--- 	FROM company.employee
--- 	JOIN company.department ON employee.Dno=department.Dnumber
--- 	GROUP BY employee.Dno
--- 	HAVING COUNT(*)>2
--- 	;
+SELECT Dname, COUNT(*)
+	FROM company.employee
+	JOIN company.department ON employee.Dno=department.Dnumber
+	WHERE employee.Salary>25000
+	GROUP BY department.Dname
+	HAVING COUNT(*)>2
+	ORDER BY Dname
+	;
