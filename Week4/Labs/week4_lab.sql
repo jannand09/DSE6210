@@ -1,10 +1,22 @@
 
 --- Question 2 - how do I use a CTE for this query?
-SELECT COUNT(*), CONCAT(first_name,' ',last_name) AS customer_name
+SELECT COUNT(*), CONCAT(first_name,' ',last_name) AS full_name
 FROM customer
 JOIN rental ON customer.customer_id=rental.customer_id
 GROUP BY customer.customer_id
 ORDER BY COUNT(*) DESC
+;
+
+WITH customer_rentals AS (
+	SELECT COUNT(*) AS rentals, customer.customer_id AS ci
+	FROM customer
+	JOIN rental ON customer.customer_id=rental.customer_id
+	GROUP BY customer.customer_id
+)
+SELECT rentals, CONCAT(first_name,' ',last_name) AS full_name
+FROM customer_rentals
+JOIN customer ON customer_rentals.ci=customer.customer_id
+WHERE rentals = (SELECT MAX(rentals) FROM customer_rentals)
 ;
 
 --- Question 3
@@ -54,6 +66,8 @@ GROUP BY categories.name
 ORDER BY COUNT(*) DESC
 LIMIT 1
 ;
+
+---Question 5
 
 -- SELECT *
 -- FROM customer
