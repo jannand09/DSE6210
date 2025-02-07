@@ -68,6 +68,24 @@ LIMIT 1
 ;
 
 ---Question 5
+--trigger example
+CREATE OR REPLACE FUNCTION delete_inactive() 
+  RETURNS trigger 
+AS
+$BODY$
+BEGIN
+    IF (NEW.activebool=FALSE)
+	THEN DELETE FROM customers WHERE customer.customer_id=New.customer_id ;
+    END IF;
+    RETURN NEW; -- this is important for a trigger
+END;
+$BODY$
+LANGUAGE plpgsql;
+	
+CREATE OR REPLACE TRIGGER inactive_customer
+AFTER UPDATE ON customer
+FOR EACH ROW
+EXECUTE FUNCTION delete_inactive();
 
 -- SELECT *
 -- FROM customer
