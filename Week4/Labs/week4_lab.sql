@@ -75,9 +75,9 @@ AS
 $BODY$
 BEGIN
     IF (NEW.activebool=FALSE)
-	THEN DELETE FROM customers WHERE customer.customer_id=New.customer_id ;
+	THEN DELETE FROM customer WHERE customer.customer_id=New.customer_id ;
     END IF;
-    RETURN NEW; -- this is important for a trigger
+    RETURN NULL; -- because this is an AFTER event trigger
 END;
 $BODY$
 LANGUAGE plpgsql;
@@ -86,6 +86,14 @@ CREATE OR REPLACE TRIGGER inactive_customer
 AFTER UPDATE ON customer
 FOR EACH ROW
 EXECUTE FUNCTION delete_inactive();
+
+UPDATE customer
+SET activebool=FALSE
+WHERE customer_id=524
+
+SELECT customer_id,activebool
+FROM customer
+;
 
 -- SELECT *
 -- FROM customer
