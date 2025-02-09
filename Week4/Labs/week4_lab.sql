@@ -1,5 +1,5 @@
 
---- Question 2 - how do I use a CTE for this query?
+--- Question 2
 SELECT COUNT(*), CONCAT(first_name,' ',last_name) AS full_name
 FROM customer
 JOIN rental ON customer.customer_id=rental.customer_id
