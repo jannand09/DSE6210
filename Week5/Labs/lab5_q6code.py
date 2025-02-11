@@ -9,7 +9,7 @@ Lab question 6 sample code
 import pymongo
 
 #create your connection string
-connect_string = 
+connect_string = "mongodb+srv://annandj:kitkatbaka@cluster0.mmpel.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0"
 #create a connection to your Atlas cluster
 client = pymongo.MongoClient(connect_string)
 
@@ -25,11 +25,14 @@ nordic = rest_coll.find_one({"name": "Nordic Delicacies"})
 #find the type of the queried document
 type(nordic)
 
+print(nordic)
 
-db = client.sample_airbnb
-collection = db['listingsAndReviews']
+print(nordic['cuisine'])
+# db = client.sample_airbnb
+# collection = db['listingsAndReviews']
 
-test = collection.find{'bedrooms':{'$gte':10}})
+
+# test = collection.find({'bedrooms':{'$gte':10}})
 
 
-test = my_collection.find()
+# test = my_collection.find()
