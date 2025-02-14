@@ -32,11 +32,17 @@ CREATE TABLE IF NOT EXISTS airline.airports (
 );
 
 --- placeholder table; not outlined in SRS
-CREATE TABLE IF NOT EXISTS airline.reservation_payment_status (
+CREATE TABLE IF NOT EXISTS airline.reservation_statuses (
 	reservation_status_code INT NOT NULL,
-	payment_status_code INT NOT NULL,
 	reservation_status VARCHAR NOT NULL,
+	PRIMARY KEY (reservation_status_code)
+);
+
+--- placeholder table; not outlined in SRS
+CREATE TABLE IF NOT EXISTS airline.payment_statuses (
+	payment_status_code INT NOT NULL,
 	payment_status VARCHAR NOT NULL
+	PRIMARY KEY (payment_status_code)
 );
 
 --- placeholder table; not outlined in SRS
@@ -71,3 +77,5 @@ CREATE TABLE IF NOT EXISTS airline.flight_costs (
 	PRIMARY KEY (valid_from_date),
 	FOREIGN KEY (valid_to_date) REFERENCES airline.flight_costs(valid_from_date) ---probably need to define this constaint after first INSERT
 ); --- add assertion that valid_to_date must be after valid_from_date
+
+--- Tables with foreign key constraints
