@@ -400,17 +400,37 @@ INSERT INTO flight_ms.itinerary_legs (reservation_id, leg_id) VALUES
 ---CREATE VIEW FOR CUSTOMER ITINERARY
 CREATE VIEW itinerary AS
 WITH leg_schedules AS (
-	SELECT f.flight_number,l.origin_aiport,l.destination_airport,l.actual_departure_time,l.actual_arrival_time,i.reservation_id,i.leg_id
+	SELECT f.flight_number
+	,l.origin_airport
+	,l.destination_airport
+	,l.actual_departure_time
+	,l.actual_arrival_time
+	,i.reservation_id
+	,i.leg_id
 	FROM flight_ms.flight_schedules AS f
 	JOIN flight_ms.legs AS l ON f.flight_number=l.flight_number
 	JOIN flight_ms.itinerary_legs AS i ON l.leg_id=i.leg_id
-) ticket_details AS (
-	SELECT r.reservation_id,r.passenger_id,t.ticket_type,c.travel_class
-	FROM itinerary_reservations AS r
-	JOIN ticket_codes AS t ON r.ticket_type_code=t.ticket_type_code
-	JOIN travel_classes as c ON r.travel_class_code=c.travel_class_code
+), ticket_details AS (
+	SELECT r.reservation_id
+	,r.passenger_id
+	,t.ticket_type
+	,c.travel_class
+	FROM flight_ms.itinerary_reservations AS r
+	JOIN flight_ms.ticket_codes AS t ON r.ticket_type_code=t.ticket_type_code
+	JOIN flight_ms.travel_classes as c ON r.travel_class_code=c.travel_class_code
 )
-SELECT *
+SELECT leg_schedules.flight_number,
+    leg_schedules.origin_airport,
+    leg_schedules.destination_airport,
+    leg_schedules.actual_departure_time,
+    leg_schedules.actual_arrival_time,
+    leg_schedules.leg_id,
+    ticket_details.passenger_id,
+    ticket_details.ticket_type,
+    ticket_details.travel_class
 FROM leg_schedules
-JOIN ticket_details ON leg_schedules_reservation_id=ticket_details
+JOIN ticket_details ON leg_schedules.reservation_id=ticket_details.reservation_id
 WHERE ticket_details.passenger_id=101
+;
+
+SELECT * FROM itinerary
