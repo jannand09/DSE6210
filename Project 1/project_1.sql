@@ -1,3 +1,5 @@
+-- Drop itinerary view
+DROP VIEW IF EXISTS flight_ms.itinerary;
 -- Drop foreign keys from all tables
 ALTER TABLE IF EXISTS flight_ms.flight_schedules DROP CONSTRAINT IF EXISTS flight_schedules_airline_code_fkey;
 ALTER TABLE IF EXISTS flight_ms.flight_schedules DROP CONSTRAINT IF EXISTS flight_schedules_usual_aircraft_type_code_fkey;
@@ -20,7 +22,7 @@ ALTER TABLE IF EXISTS flight_ms.itinerary_legs DROP CONSTRAINT IF EXISTS itinera
 ALTER TABLE IF EXISTS flight_ms.itinerary_legs DROP CONSTRAINT IF EXISTS itinerary_legs_leg_id_fkey;
 
 ---Drop tables from the schema
-DROP TABLE IF EXISTS flight_ms.itinerary_legs;
+DROP TABLE IF EXISTS flight_ms.itinerary_legs CASCADE;
 DROP TABLE IF EXISTS flight_ms.legs;
 DROP TABLE IF EXISTS flight_ms.reservation_payments;
 DROP TABLE IF EXISTS flight_ms.payments;
@@ -294,7 +296,8 @@ EXECUTE FUNCTION prevent_overlapping_costs();
 
 ---Insert statements
 -- Insert into ref_calendar (First week of February 2025)
-INSERT INTO flight_ms.ref_calendar (day_date, day_number, business_day_yn) VALUES
+INSERT INTO flight_ms.ref_calendar (day_date, day_number, business_day_yn)
+VALUES
 ('2025-02-01', 1, 'N'),
 ('2025-02-02', 2, 'N'),
 ('2025-02-03', 3, 'Y'),
@@ -302,39 +305,46 @@ INSERT INTO flight_ms.ref_calendar (day_date, day_number, business_day_yn) VALUE
 ('2025-02-05', 5, 'Y');
 
 -- Insert into reservation_statuses
-INSERT INTO flight_ms.reservation_statuses (reservation_status_code, reservation_status) VALUES
+INSERT INTO flight_ms.reservation_statuses (reservation_status_code, reservation_status) 
+VALUES
 (1, 'Confirmed'),
 (2, 'Pending'),
 (3, 'Cancelled');
 
 -- Insert into payment_statuses
-INSERT INTO flight_ms.payment_statuses (payment_status_code, payment_status) VALUES
+INSERT INTO flight_ms.payment_statuses (payment_status_code, payment_status)
+VALUES
 (1, 'Paid'),
 (2, 'Pending'),
 (3, 'Failed');
 
 -- Insert into ticket_codes
-INSERT INTO flight_ms.ticket_codes (ticket_type_code, ticket_type) VALUES
+INSERT INTO flight_ms.ticket_codes (ticket_type_code, ticket_type)
+VALUES
 (1, 'One-Way'),
 (2, 'Round-Trip');
 
 -- Insert into travel_classes
-INSERT INTO flight_ms.travel_classes (travel_class_code, travel_class) VALUES
+INSERT INTO flight_ms.travel_classes (travel_class_code, travel_class)
+VALUES
 (1, 'Economy'),
 (2, 'Business');
 
 -- Insert into airlines
-INSERT INTO flight_ms.airlines (airline_code, airline_name) VALUES
+INSERT INTO flight_ms.airlines (airline_code, airline_name)
+VALUES
 (1, 'Sky Airways'),
 (2, 'Global Flights');
 
 -- Insert into aircrafts
-INSERT INTO flight_ms.aircrafts (aircraft_type_code, aircraft_type) VALUES
+INSERT INTO flight_ms.aircrafts (aircraft_type_code, aircraft_type)
+VALUES
 (1, 'Boeing 737'),
 (2, 'Airbus A320');
 
 -- Insert into airports
-INSERT INTO flight_ms.airports (airport_code, airport_name, airport_location) VALUES
+INSERT INTO flight_ms.airports (airport_code, airport_name, airport_location) 
+VALUES
 (101, 'JFK International', 'New York'),
 (102, 'LAX International', 'Los Angeles'),
 (103, 'O''Hare International', 'Chicago');
@@ -345,17 +355,20 @@ INSERT INTO flight_ms.booking_agents (agent_id, agent_name, agent_details) VALUE
 (2, 'Elite Bookings', 'VIP Travel Services');
 
 -- Insert into flight_schedules
-INSERT INTO flight_ms.flight_schedules (flight_number, airline_code, usual_aircraft_type_code, origin_airport_code, destination_airport_code, departure_date_time, arrival_date_time) VALUES
+INSERT INTO flight_ms.flight_schedules (flight_number, airline_code, usual_aircraft_type_code, origin_airport_code, destination_airport_code, departure_date_time, arrival_date_time)
+VALUES
 (1001, 1, 1, 101, 102, '2025-02-01 08:00:00', '2025-02-01 11:00:00'),
 (1002, 2, 2, 102, 103, '2025-02-02 09:00:00', '2025-02-02 12:00:00');
 
 -- Insert into flight_costs
-INSERT INTO flight_ms.flight_costs (flight_number, aircraft_type_code, valid_from_date, valid_to_date, flight_cost) VALUES
+INSERT INTO flight_ms.flight_costs (flight_number, aircraft_type_code, valid_from_date, valid_to_date, flight_cost)
+VALUES
 (1001, 1, '2025-02-01', '2025-02-05', 300),
 (1002, 2, '2025-02-01', '2025-02-05', 350);
 
 -- Insert into passengers
-INSERT INTO flight_ms.passengers (passenger_id, first_name, last_name, phone_number, email_address, address_lines, state_province_county, country) VALUES
+INSERT INTO flight_ms.passengers (passenger_id, first_name, last_name, phone_number, email_address, address_lines, state_province_county, country)
+VALUES
 (201, 'Alice', 'Smith', '1234567890', 'alice@example.com', '123 Elm St', 'NY', 'USA'),
 (202, 'Bob', 'Johnson', '2345678901', 'bob@example.com', '456 Oak St', 'CA', 'USA'),
 (203, 'Charlie', 'Davis', '3456789012', 'charlie@example.com', '789 Pine St', 'IL', 'USA'),
@@ -363,7 +376,8 @@ INSERT INTO flight_ms.passengers (passenger_id, first_name, last_name, phone_num
 (205, 'Emma', 'Wilson', '5678901234', 'emma@example.com', '202 Cedar St', 'FL', 'USA');
 
 -- Insert into itinerary_reservations (Ensuring at least two passengers have multiple legs)
-INSERT INTO flight_ms.itinerary_reservations (reservation_id, agent_id, passenger_id, reservation_status_code, ticket_type_code, travel_class_code, date_reservation_made, number_in_party) VALUES
+INSERT INTO flight_ms.itinerary_reservations (reservation_id, agent_id, passenger_id, reservation_status_code, ticket_type_code, travel_class_code, date_reservation_made, number_in_party) 
+VALUES
 (301, 1, 201, 1, 1, 1, '2025-02-01', 1),
 (302, 1, 202, 1, 2, 2, '2025-02-01', 2),
 (303, 2, 203, 1, 1, 1, '2025-02-02', 1),
@@ -377,26 +391,29 @@ INSERT INTO flight_ms.payments (payment_id, payment_status_code, payment_date, p
 (403, 1, '2025-02-03', 400);
 
 -- Insert into reservation_payments
-INSERT INTO flight_ms.reservation_payments (reservation_id, payment_id) VALUES
+INSERT INTO flight_ms.reservation_payments (reservation_id, payment_id) 
+VALUES
 (301, 401),
 (302, 402),
 (303, 403);
 
 -- Insert into legs (Ensuring at least two passengers have multiple legs)
-INSERT INTO flight_ms.legs (leg_id, flight_number, origin_airport, destination_airport, actual_departure_time, actual_arrival_time) VALUES
+INSERT INTO flight_ms.legs (leg_id, flight_number, origin_airport, destination_airport, actual_departure_time, actual_arrival_time)
+VALUES
 (501, 1001, 'JFK International', 'LAX International', '2025-02-01 08:00:00', '2025-02-01 11:00:00'),
 (502, 1002, 'LAX International', 'O''Hare International', '2025-02-02 09:00:00', '2025-02-02 12:00:00'),
 (503, 1001, 'JFK International', 'LAX International', '2025-02-03 08:00:00', '2025-02-03 11:00:00');
 
 --Insert into itinerary_legs (Ensuring two passengers have multiple legs)
-INSERT INTO flight_ms.itinerary_legs (reservation_id, leg_id) VALUES
+INSERT INTO flight_ms.itinerary_legs (reservation_id, leg_id) 
+VALUES
 (301, 501),
 (302, 501),
 (302, 502),
 (303, 503);
 
-
 ---CREATE VIEW FOR CUSTOMER ITINERARY
+DROP VIEW IF EXISTS itinerary;
 CREATE VIEW itinerary AS
 WITH leg_schedules AS (
 	SELECT f.flight_number
@@ -418,7 +435,8 @@ WITH leg_schedules AS (
 	JOIN flight_ms.ticket_codes AS t ON r.ticket_type_code=t.ticket_type_code
 	JOIN flight_ms.travel_classes as c ON r.travel_class_code=c.travel_class_code
 )
-SELECT leg_schedules.flight_number,
+SELECT leg_schedules.reservation_id,
+	leg_schedules.flight_number,
     leg_schedules.origin_airport,
     leg_schedules.destination_airport,
     leg_schedules.actual_departure_time,
@@ -429,9 +447,33 @@ SELECT leg_schedules.flight_number,
     ticket_details.travel_class
 FROM leg_schedules
 JOIN ticket_details ON leg_schedules.reservation_id=ticket_details.reservation_id
-WHERE ticket_details.passenger_id=101
+WHERE ticket_details.passenger_id=202
 ;
 
-SELECT * FROM itinerary
+-- SELECT * FROM itinerary
+
+-- SELECT * FROM flight_ms.itinerary_legs;
+-- SELECT * FROM flight_ms.itinerary_reservations;
+
+--SELECT * FROM flight_ms.passengers
 
 ---Get all customers who have seats on a given flight
+WITH passenger_legs AS (
+	SELECT p.passenger_id
+	,i.leg_id
+	,p.first_name
+	,p.second_name
+	,p.last_name
+	FROM flight_ms.passengers AS p
+	JOIN flight_ms.itinerary_reservations AS r ON p.passenger_id=r.passenger_id
+	JOIN flight_ms.itinerary_legs AS i ON r.reservation_id=i.reservation_id
+)
+SELECT l.flight_number
+	,p.passenger_id
+	,p.first_name
+	,p.second_name
+	,p.last_name
+FROM passenger_legs AS p
+JOIN flight_ms.legs as l ON p.leg_id=l.leg_id
+WHERE l.flight_number=1001
+;
