@@ -293,109 +293,108 @@ EXECUTE FUNCTION prevent_overlapping_costs();
 ---prevent duplicate reservations by the same passenger
 
 ---Insert statements
---- insert sample airlines data
-INSERT INTO flight_ms.airlines (airline_code, airline_name) VALUES
-(1, 'American Airlines'),
-(2, 'Delta Airlines'),
-(3, 'United Airlines');
+-- Insert into ref_calendar (First week of February 2025)
+INSERT INTO flight_ms.ref_calendar (day_date, day_number, business_day_yn) VALUES
+('2025-02-01', 1, 'N'),
+('2025-02-02', 2, 'N'),
+('2025-02-03', 3, 'Y'),
+('2025-02-04', 4, 'Y'),
+('2025-02-05', 5, 'Y');
 
---- insert sample airports data
-INSERT INTO flight_ms.airports (airport_code, airport_name, airport_location, other_details) VALUES
-(100, 'JFK International Airport', 'New York, USA', NULL),
-(200, 'Los Angeles International Airport', 'Los Angeles, USA', NULL),
-(300, 'O''Hare International Airport', 'Chicago, USA', NULL);
-
--- insert sample reservation statuses
+-- Insert into reservation_statuses
 INSERT INTO flight_ms.reservation_statuses (reservation_status_code, reservation_status) VALUES
-(1, 'Pending'),
-(2, 'Confirmed'),
+(1, 'Confirmed'),
+(2, 'Pending'),
 (3, 'Cancelled');
 
--- insert payment statuses
+-- Insert into payment_statuses
 INSERT INTO flight_ms.payment_statuses (payment_status_code, payment_status) VALUES
-(1, 'Pending'),
-(2, 'Completed'),
+(1, 'Paid'),
+(2, 'Pending'),
 (3, 'Failed');
 
--- insert sample ticket codes
+-- Insert into ticket_codes
 INSERT INTO flight_ms.ticket_codes (ticket_type_code, ticket_type) VALUES
-(1, 'Economy'),
-(2, 'Business'),
-(3, 'First Class');
+(1, 'One-Way'),
+(2, 'Round-Trip');
 
--- insert sample travel codes
+-- Insert into travel_classes
 INSERT INTO flight_ms.travel_classes (travel_class_code, travel_class) VALUES
 (1, 'Economy'),
-(2, 'Business'),
-(3, 'First Class');
+(2, 'Business');
 
--- insert sample aircrafts
+-- Insert into airlines
+INSERT INTO flight_ms.airlines (airline_code, airline_name) VALUES
+(1, 'Sky Airways'),
+(2, 'Global Flights');
+
+-- Insert into aircrafts
 INSERT INTO flight_ms.aircrafts (aircraft_type_code, aircraft_type) VALUES
 (1, 'Boeing 737'),
-(2, 'Airbus A320'),
-(3, 'Boeing 777');
+(2, 'Airbus A320');
 
--- insert sample calendar data
-INSERT INTO flight_ms.ref_calendar (day_date, day_number, business_day_yn) VALUES
-('2025-02-02', 1, 'N'),
-('2025-02-03', 2, 'Y'),
-('2025-02-04', 3, 'Y'),
-('2025-02-05', 4, 'Y'),
-('2025-02-06', 5, 'Y');
+-- Insert into airports
+INSERT INTO flight_ms.airports (airport_code, airport_name, airport_location) VALUES
+(101, 'JFK International', 'New York'),
+(102, 'LAX International', 'Los Angeles'),
+(103, 'O''Hare International', 'Chicago');
 
--- insert sample data into passengers
-INSERT INTO flight_ms.passengers (passenger_id, first_name, second_name, last_name, phone_number, email_address, address_lines, state_province_county, country, other_passenger_details) VALUES
-(101, 'John', 'M.', 'Doe', '123-456-7890', 'john.doe@example.com', '123 Main St', 'New York', 'USA', NULL),
-(102, 'Jane', NULL, 'Smith', '987-654-3210', 'jane.smith@example.com', '456 Elm St', 'California', 'USA', NULL),
-(103, 'Alice', 'L.', 'Johnson', '555-666-7777', 'alice.johnson@example.com', '789 Oak St', 'Illinois', 'USA', NULL);
-
--- insert sample data into booking_agents
+-- Insert into booking_agents
 INSERT INTO flight_ms.booking_agents (agent_id, agent_name, agent_details) VALUES
-(201, 'Best Travel Agency', NULL),
-(202, 'Elite Travels', NULL),
-(203, 'Fast Flights', NULL);
+(1, 'John Doe Travels', 'Premium Travel Agency'),
+(2, 'Elite Bookings', 'VIP Travel Services');
 
--- insert sample data into flight_schedules
+-- Insert into flight_schedules
 INSERT INTO flight_ms.flight_schedules (flight_number, airline_code, usual_aircraft_type_code, origin_airport_code, destination_airport_code, departure_date_time, arrival_date_time) VALUES
-(301, 1, 1, 100, 200, '2025-06-01 08:00:00', '2025-06-01 11:00:00'),
-(302, 2, 2, 200, 300, '2025-06-02 09:00:00', '2025-06-02 12:00:00'),
-(303, 3, 3, 300, 100, '2025-06-03 07:30:00', '2025-06-03 10:30:00');
+(1001, 1, 1, 101, 102, '2025-02-01 08:00:00', '2025-02-01 11:00:00'),
+(1002, 2, 2, 102, 103, '2025-02-02 09:00:00', '2025-02-02 12:00:00');
 
--- insert sample data into flight_costs
+-- Insert into flight_costs
 INSERT INTO flight_ms.flight_costs (flight_number, aircraft_type_code, valid_from_date, valid_to_date, flight_cost) VALUES
-(301, 1, '2025-02-02', '2025-02-03', 200),
-(302, 2, '2025-02-03', '2025-02-04', 300),
-(303, 3, '2025-02-04', '2025-02-06', 400);
+(1001, 1, '2025-02-01', '2025-02-05', 300),
+(1002, 2, '2025-02-01', '2025-02-05', 350);
 
--- insert sample data into itinerary_reservations
+-- Insert into passengers
+INSERT INTO flight_ms.passengers (passenger_id, first_name, last_name, phone_number, email_address, address_lines, state_province_county, country) VALUES
+(201, 'Alice', 'Smith', '1234567890', 'alice@example.com', '123 Elm St', 'NY', 'USA'),
+(202, 'Bob', 'Johnson', '2345678901', 'bob@example.com', '456 Oak St', 'CA', 'USA'),
+(203, 'Charlie', 'Davis', '3456789012', 'charlie@example.com', '789 Pine St', 'IL', 'USA'),
+(204, 'Daniel', 'Evans', '4567890123', 'daniel@example.com', '101 Maple St', 'TX', 'USA'),
+(205, 'Emma', 'Wilson', '5678901234', 'emma@example.com', '202 Cedar St', 'FL', 'USA');
+
+-- Insert into itinerary_reservations (Ensuring at least two passengers have multiple legs)
 INSERT INTO flight_ms.itinerary_reservations (reservation_id, agent_id, passenger_id, reservation_status_code, ticket_type_code, travel_class_code, date_reservation_made, number_in_party) VALUES
-(401, 201, 101, 2, 1, 1, '2025-02-02', 1),
-(402, 202, 102, 2, 2, 2, '2025-02-03', 2),
-(403, 203, 103, 1, 3, 3, '2025-02-04', 1);
+(301, 1, 201, 1, 1, 1, '2025-02-01', 1),
+(302, 1, 202, 1, 2, 2, '2025-02-01', 2),
+(303, 2, 203, 1, 1, 1, '2025-02-02', 1),
+(304, 2, 204, 1, 2, 2, '2025-02-02', 1),
+(305, 1, 205, 1, 1, 1, '2025-02-02', 1);
 
--- insert sample data into payments
+-- Insert into payments
 INSERT INTO flight_ms.payments (payment_id, payment_status_code, payment_date, payment_amount) VALUES
-(501, 2, '2025-02-02', 200),
-(502, 2, '2025-02-03', 300),
-(503, 1, '2025-02-04', 400);
+(401, 1, '2025-02-01', 300),
+(402, 1, '2025-02-02', 350),
+(403, 1, '2025-02-03', 400);
 
--- insert sample data into reservation payments
+-- Insert into reservation_payments
 INSERT INTO flight_ms.reservation_payments (reservation_id, payment_id) VALUES
-(401, 501),
-(402, 502),
-(403, 503);
+(301, 401),
+(302, 402),
+(303, 403);
 
--- insert sample data into legs
+-- Insert into legs (Ensuring at least two passengers have multiple legs)
 INSERT INTO flight_ms.legs (leg_id, flight_number, origin_airport, destination_airport, actual_departure_time, actual_arrival_time) VALUES
-(601, 301, 'JFK International Airport', 'Los Angeles International Airport', '2025-06-01 08:10:00', '2025-06-01 11:05:00'),
-(602, 302, 'Los Angeles International Airport', 'O''Hare International Airport', '2025-06-02 09:10:00', '2025-06-02 12:05:00'),
-(603, 303, 'O''Hare International Airport', 'JFK International Airport', '2025-06-03 07:40:00', '2025-06-03 10:25:00');
+(501, 1001, 'JFK International', 'LAX International', '2025-02-01 08:00:00', '2025-02-01 11:00:00'),
+(502, 1002, 'LAX International', 'O''Hare International', '2025-02-02 09:00:00', '2025-02-02 12:00:00'),
+(503, 1001, 'JFK International', 'LAX International', '2025-02-03 08:00:00', '2025-02-03 11:00:00');
 
--- insert sample data into itinerary_legs
+--Insert into itinerary_legs (Ensuring two passengers have multiple legs)
 INSERT INTO flight_ms.itinerary_legs (reservation_id, leg_id) VALUES
-(401, 601),
-(402, 602),
-(403, 603);
+(301, 501),
+(302, 501),
+(302, 502),
+(303, 503);
+
 
 ---CREATE VIEW FOR CUSTOMER ITINERARY
 CREATE VIEW itinerary AS
@@ -434,3 +433,5 @@ WHERE ticket_details.passenger_id=101
 ;
 
 SELECT * FROM itinerary
+
+---Get all customers who have seats on a given flight
