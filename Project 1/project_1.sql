@@ -1,5 +1,5 @@
 -- Drop Views
-DROP VIEW IF EXISTS flight_ms.all_flight_schedules
+DROP VIEW IF EXISTS flight_ms.all_flight_schedules;
 DROP VIEW IF EXISTS flight_ms.itinerary;
 -- Drop foreign keys from all tables
 ALTER TABLE IF EXISTS flight_ms.flight_schedules DROP CONSTRAINT IF EXISTS flight_schedules_airline_code_fkey;
@@ -451,7 +451,7 @@ JOIN ticket_details ON leg_schedules.reservation_id=ticket_details.reservation_i
 WHERE ticket_details.passenger_id=202
 ;
 
-SELECT * FROM itinerary
+SELECT * FROM itinerary;
 
 ---Get all customers who have seats on a given flight
 WITH passenger_legs AS (
@@ -520,4 +520,62 @@ FROM flight_data AS d
 ;
 
 ---Calculate total sales for a given flight
+-- WITH all_flights AS (
+-- 	SELECT
+-- 		c.flight_number
+-- 		,c.valid_from_date
+-- 		,c.valid_to_date
+-- 		,c.flight_cost
+-- 		,r.reservation_id
+-- 		,r.date_reservation_made
+-- 		,r.number_in_party
+-- 		,ps.payment_status
+-- 	FROM flight_ms.flight_costs AS c
+-- 	JOIN flight_ms.legs AS l ON c.flight_number=l.flight_number
+-- 	JOIN flight_ms.itinerary_legs AS i ON l.leg_id=i.leg_id
+-- 	JOIN flight_ms.itinerary_reservations AS r ON i.reservation_id=r.reservation_id
+-- 	JOIN flight_ms.reservation_payments AS rp ON r.reservation_id=rp.reservation_id
+-- 	JOIN flight_ms.payments AS p ON rp.payment_id=p.payment_id
+-- 	JOIN flight_ms.payment_statuses AS ps ON p.payment_status_code=ps.payment_status_code
+-- 	WHERE c.flight_number=1001
+-- ), get_prices AS (
+-- 	SELECT
+-- 	FROM all_flights
+-- )
+WITH paid_flights AS (
+	SELECT
+		l.flight_number
+		,r.reservation_id
+		,r.date_reservation_made
+		,r.number_in_party
+		,ps.payment_status
+	FROM flight_ms.legs AS l 
+	JOIN flight_ms.itinerary_legs AS i ON l.leg_id=i.leg_id
+	JOIN flight_ms.itinerary_reservations AS r ON i.reservation_id=r.reservation_id
+	JOIN flight_ms.reservation_payments AS rp ON r.reservation_id=rp.reservation_id
+	JOIN flight_ms.payments AS p ON rp.payment_id=p.payment_id
+	JOIN flight_ms.payment_statuses AS ps ON p.payment_status_code=ps.payment_status_code
+	WHERE l.flight_number=1001
+	AND ps.payment_status='PAID'
+), with_costs AS (
+	SELECT
+		pf.flight_number 
+		,pf.reservation_id
+		,pf.number_in_party 
+		,c.flight_cost
+	FROM paid_flights AS pf
+	JOIN flight_ms.flight_costs AS c ON c.flight_number=pf.flight_number
+	WHERE pf.date_reservation_made BETWEEN c.valid_from_date AND c.valid_to_date
+), get_prices AS (
+	SELECT
+		*,
+		w.number_in_party * w.flight_cost AS total_paid
+	FROM with_costs AS w
+)
+SELECT
+	g.flight_number
+	,SUM(total_paid) AS total_sales
+FROM get_prices AS g
+GROUP BY flight_number
+;
 
