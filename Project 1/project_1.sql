@@ -519,3 +519,5 @@ SELECT
 FROM flight_data AS d
 ;
 
+---Calculate total sales for a given flight
+
