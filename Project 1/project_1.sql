@@ -451,12 +451,7 @@ JOIN ticket_details ON leg_schedules.reservation_id=ticket_details.reservation_i
 WHERE ticket_details.passenger_id=202
 ;
 
--- SELECT * FROM itinerary
-
--- SELECT * FROM flight_ms.itinerary_legs;
--- SELECT * FROM flight_ms.itinerary_reservations;
-
---SELECT * FROM flight_ms.passengers
+SELECT * FROM itinerary
 
 ---Get all customers who have seats on a given flight
 WITH passenger_legs AS (
@@ -499,3 +494,28 @@ JOIN flight_ms.aircrafts AS c ON f.usual_aircraft_type_code=c.aircraft_type_code
 ;
 
 SELECT * FROM all_flight_schedules;
+
+---Get all flights whose arrival and departure times are on time/delayed
+WITH flight_data AS (
+	SELECT f.flight_number
+	,l.origin_airport
+	,l.destination_airport
+	,f.departure_date_time
+	,f.arrival_date_time
+	,l.actual_departure_time
+	,l.actual_arrival_time
+	FROM flight_ms.flight_schedules AS f
+	JOIN flight_ms.legs as l ON f.flight_number=l.flight_number
+)
+SELECT
+	d.flight_number
+	,d.origin_airport
+	,d.destination_airport
+	,CASE 
+		WHEN departure_date_time < actual_departure_time 
+		OR arrival_date_time < actual_arrival_time THEN 'DELAYED'
+		ELSE 'ON TIME'
+	END AS tracking
+FROM flight_data AS d
+;
+
