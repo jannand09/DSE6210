@@ -149,8 +149,8 @@ CREATE TABLE IF NOT EXISTS flight_ms.flight_costs (
 	valid_to_date DATE NOT NULL,
 	flight_cost INT NOT NULL,
 	PRIMARY KEY (flight_number, aircraft_type_code, valid_from_date),
-	FOREIGN KEY (flight_number) REFERENCES flight_ms.flight_schedules(flight_number),
-	FOREIGN KEY (aircraft_type_code) REFERENCES flight_ms.aircrafts(aircraft_type_code),
+	FOREIGN KEY (flight_number) REFERENCES flight_ms.flight_schedules(flight_number) ON UPDATE CASCADE ON DELETE CASCADE,
+	FOREIGN KEY (aircraft_type_code) REFERENCES flight_ms.aircrafts(aircraft_type_code) ON UPDATE CASCADE,
 	FOREIGN KEY (valid_from_date) REFERENCES flight_ms.ref_calendar(day_date),
 	FOREIGN KEY (valid_to_date) REFERENCES flight_ms.ref_calendar(day_date)
 );
