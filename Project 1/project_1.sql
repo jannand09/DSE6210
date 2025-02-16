@@ -294,7 +294,61 @@ BEFORE INSERT OR UPDATE ON flight_ms.flight_costs
 FOR EACH ROW
 EXECUTE FUNCTION prevent_overlapping_costs();
 
+---set reservation status code to that of pending status when new reservation is created
+CREATE OR REPLACE FUNCTION set_default_reservation_status()
+RETURNS TRIGGER AS $$
+BEGIN
+    IF NEW.reservation_status_code IS NULL 
+	THEN
+		NEW.reservation_status=(
+			SELECT reservation_status_code
+			FROM flight_ms.reservation_statuses
+			WHERE reservation_status='Pending'
+			LIMIT 1)
+        -- SELECT reservation_status_code INTO NEW.reservation_status_code
+        -- FROM flight_ms.reservation_statuses
+        -- WHERE reservation_status = 'Pending'
+        -- LIMIT 1;
+    END IF;
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER default_reservation_status
+BEFORE INSERT ON flight_ms.itinerary_reservations
+FOR EACH ROW EXECUTE FUNCTION set_default_reservation_status();
+
+
 ---prevent duplicate reservations by the same passenger
+CREATE OR REPLACE FUNCTION prevent_duplicate_flight_reservations()
+RETURNS TRIGGER AS $$
+BEGIN
+    -- Check if the passenger already has a reservation for this flight
+    IF EXISTS (
+		WITH existing_flight_no AS (
+			SELECT flight_number 
+			FROM flight_ms.legs 
+			WHERE leg_id = NEW.leg_id 
+			LIMIT 1
+		)
+        SELECT 1
+        FROM flight_ms.itinerary_reservations AS r
+        JOIN flight_ms.itinerary_legs AS il ON r.reservation_id = il.reservation_id
+        JOIN flight_ms.legs AS l ON il.leg_id = l.leg_id
+        WHERE r.passenger_id = NEW.passenger_id
+        AND l.flight_number = existing_flight_no
+    ) THEN
+        RAISE EXCEPTION 'This passenger is already booked for this flight';
+    END IF;
+
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER check_duplicate_flight_reservations
+BEFORE INSERT ON flight_ms.itinerary_reservations
+FOR EACH ROW
+EXECUTE FUNCTION prevent_duplicate_flight_reservations();
 
 ---Insert statements
 -- Insert into ref_calendar (First week of February 2025)
@@ -416,7 +470,7 @@ VALUES
 
 ---CREATE VIEW FOR CUSTOMER ITINERARY
 DROP VIEW IF EXISTS itinerary;
-CREATE VIEW itinerary AS
+CREATE OR REPLACE VIEW itinerary AS
 WITH leg_schedules AS (
 	SELECT f.flight_number
 	,l.origin_airport
@@ -489,10 +543,9 @@ END;
 $$ LANGUAGE plpgsql
 ;
 
-
 ---View flight schedules
 DROP VIEW IF EXISTS all_flight_schedules;
-CREATE VIEW all_flight_schedules AS
+CREATE OR REPLACE VIEW all_flight_schedules AS
 SELECT f.flight_number
 	,f.departure_date_time
 	,f.arrival_date_time
