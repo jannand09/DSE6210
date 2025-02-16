@@ -1,4 +1,5 @@
 -- Drop Views
+DROP VIEW IF EXISTS flight_ms.flight_tracker;
 DROP VIEW IF EXISTS flight_ms.all_flight_schedules;
 DROP VIEW IF EXISTS flight_ms.itinerary;
 -- Drop foreign keys from all tables
@@ -511,6 +512,8 @@ JOIN flight_ms.aircrafts AS c ON f.usual_aircraft_type_code=c.aircraft_type_code
 SELECT * FROM all_flight_schedules;
 
 ---Get all flights whose arrival and departure times are on time/delayed
+DROP VIEW IF EXISTS flight_tracker;
+CREATE VIEW flight_tracker AS 
 WITH flight_data AS (
 	SELECT f.flight_number
 	,l.origin_airport
