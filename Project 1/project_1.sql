@@ -1,4 +1,5 @@
--- Drop itinerary view
+-- Drop Views
+DROP VIEW IF EXISTS flight_ms.all_flight_schedules
 DROP VIEW IF EXISTS flight_ms.itinerary;
 -- Drop foreign keys from all tables
 ALTER TABLE IF EXISTS flight_ms.flight_schedules DROP CONSTRAINT IF EXISTS flight_schedules_airline_code_fkey;
@@ -477,3 +478,24 @@ FROM passenger_legs AS p
 JOIN flight_ms.legs as l ON p.leg_id=l.leg_id
 WHERE l.flight_number=1001
 ;
+
+---View flight schedules
+DROP VIEW IF EXISTS all_flight_schedules;
+CREATE VIEW all_flight_schedules AS
+SELECT f.flight_number
+	,f.departure_date_time
+	,f.arrival_date_time
+	,o.airport_name AS origin_airport_name
+	,o.airport_location AS origin_location
+	,d.airport_name AS destination_airport_name
+	,d.airport_location AS destination_location
+	,l.airline_name
+	,c.aircraft_type
+FROM flight_ms.flight_schedules AS f
+JOIN flight_ms.airports AS o ON f.origin_airport_code=o.airport_code
+JOIN flight_ms.airports AS d ON f.destination_airport_code=d.airport_code
+JOIN flight_ms.airlines AS l ON f.airline_code=l.airline_code
+JOIN flight_ms.aircrafts AS c ON f.usual_aircraft_type_code=c.aircraft_type_code
+;
+
+SELECT * FROM all_flight_schedules;
