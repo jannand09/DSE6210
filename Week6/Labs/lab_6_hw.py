@@ -18,7 +18,10 @@ https://pymongo.readthedocs.io/en/stable/examples/authentication.html
 #create your connection string
 connect_string = ""
 #create a connection to your Atlas cluster
-
+try:
+    client = MongoClient(connect_string)
+except:
+    print("Connection failed :/")
 
 """
 Exercise 2
@@ -27,8 +30,8 @@ Once you have connected to the database set your collection to a new collection,
 https://pymongo.readthedocs.io/en/stable/tutorial.html --> getting database and getting collection
 
 """
-
-
+db = client.homework6
+collection = db.students
 
 """
 Exercise 3
@@ -60,7 +63,7 @@ student_data = [
      "students":["Roger Clemens","Ray Allen","Marcus Smart","Kevin Garnett",'Mo Vaughn',"Uma Thurman","Conan O'Brien","Mark Wahlberg"]},
     ]
 
-
+collection.insert_many(student_data)
 
 """
 Exercise 4
@@ -79,7 +82,8 @@ https://www.geeksforgeeks.org/python-mongodb-update_one/
 https://www.mongodb.com/docs/manual/reference/operator/update/pull/
 
 """
-
+filter = {'instructor': 'Carlin'}
+collection.update_one(filter, { $pull: { "students" : { $eq: "George Straight" } } })
 
 """
 Exercise 6
@@ -87,7 +91,8 @@ A new student has signed up for all three SP2 sessions, his name is Tom Brady.
 Update the SP2 classes by inserting the student Tom Brady into the students object. 
 Note: Many not one. Push not pull. 
 """
-
+filter = { "term": "SP2" }
+collection.update_many(filter, { $push: { "students": { "Tom Brady " } } })
 
 
 """
