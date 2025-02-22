@@ -6,7 +6,6 @@ Lab question 6 sample code
 @author: jlowh
 """
 #import pymongo
-import pymongo
 
 from pymongo.mongo_client import MongoClient
 from pymongo.server_api import ServerApi
@@ -129,6 +128,7 @@ for x in collection.find():
 Exercise 9
 Instead of using the default hash _id, what would you recommend as a unique ID for each document?
 """
+collection.create_index([("instructor", 1), ("class", 1), ("term", 1)], unique=True)
 
 
 """
