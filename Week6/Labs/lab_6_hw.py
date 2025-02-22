@@ -8,6 +8,21 @@ Lab question 6 sample code
 #import pymongo
 import pymongo
 
+from pymongo.mongo_client import MongoClient
+from pymongo.server_api import ServerApi
+
+# uri = "mongodb+srv://annandj:<db_password>@cluster0.mmpel.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0"
+
+# # Create a new client and connect to the server
+# client = MongoClient(uri, server_api=ServerApi('1'))
+
+# # Send a ping to confirm a successful connection
+# try:
+#     client.admin.command('ping')
+#     print("Pinged your deployment. You successfully connected to MongoDB!")
+# except Exception as e:
+#     print(e)
+
 """
 Exercise 1
 Create a mongo_db connection with pymongo to your database
@@ -16,10 +31,10 @@ https://pymongo.readthedocs.io/en/stable/examples/authentication.html
 
 #https://pymongo.readthedocs.io/en/stable/examples/authentication.html
 #create your connection string
-connect_string = ""
+connect_string = "mongodb+srv://annandj:kitkatbaka@cluster0.mmpel.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0"
 #create a connection to your Atlas cluster
 try:
-    client = MongoClient(connect_string)
+    client = MongoClient(connect_string, server_api=ServerApi('1'))
 except:
     print("Connection failed :/")
 
@@ -83,7 +98,7 @@ https://www.mongodb.com/docs/manual/reference/operator/update/pull/
 
 """
 filter = {'instructor': 'Carlin'}
-collection.update_one(filter, { $pull: { "students" : { $eq: "George Straight" } } })
+collection.update_one(filter, { "$pull": { "students" : "George Straight"  } })
 
 """
 Exercise 6
@@ -92,7 +107,7 @@ Update the SP2 classes by inserting the student Tom Brady into the students obje
 Note: Many not one. Push not pull. 
 """
 filter = { "term": "SP2" }
-collection.update_many(filter, { $push: { "students": { "Tom Brady " } } })
+collection.update_many(filter, { "$push": { "students": { "Tom Brady " } } })
 
 
 """
