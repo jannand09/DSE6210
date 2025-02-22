@@ -107,7 +107,7 @@ Update the SP2 classes by inserting the student Tom Brady into the students obje
 Note: Many not one. Push not pull. 
 """
 filter = { "term": "SP2" }
-collection.update_many(filter, { "$push": { "students": { "Tom Brady " } } })
+collection.update_many(filter, { "$push": { "students": "Tom Brady"  } })
 
 
 """
@@ -115,14 +115,15 @@ Exercise 7
 The college has decided that Chemistry was not a good fit for the data science program. Delete it from the collection. 
 https://www.geeksforgeeks.org/python-mongodb-delete_one/
 """
-
-
+filter = { "class": "Chemistry" }
+collection.delete_one(filter)
 
 """
 Exercise 8
 Using find, print all of the documents to the console. This should be a query against the MongoDB database.
 """
-
+for x in collection.find():
+    print(x)
     
 """
 Exercise 9
@@ -134,4 +135,5 @@ Instead of using the default hash _id, what would you recommend as a unique ID f
 Exercise 10
 Drop the students collection from the database AND close your client. 
 """
-
+collection.drop()
+client.close()
