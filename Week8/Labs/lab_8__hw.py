@@ -8,7 +8,13 @@ Created on Sat Jul 22 21:26:37 2023
 #import pymongo
 import pymongo
 
+#create your connection string
+connect_string = "mongodb+srv://annandj:kitkatbaka@cluster0.mmpel.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0"
+#create a connection to your Atlas cluster
+client = pymongo.MongoClient(connect_string)
 
+#connect to the sample_mflix.movies db
+collection = client['sample_mflix']['movies']
 
 """
 Exercise 1
@@ -25,8 +31,28 @@ collection.aggregate(query) is the syntax for aggregation pipelines in Python.
 https://pymongo.readthedocs.io/en/stable/examples/aggregation.html
 """
 
+result1 = collection.aggregate([
+    {
+        '$match': {
+            'imdb.rating': {
+                '$type': 'number'
+            }
+        }
+    }, {
+        '$sort': {
+            'imdb.rating': -1
+        }
+    }, {
+        '$limit': 1
+    }, {
+        '$project': {
+            'title': 1, 
+            'imdb_rating': '$imdb.rating'
+        }
+    }
+])
 
-
+print(result1)
 
 """
 Exercise 2
