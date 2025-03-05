@@ -162,5 +162,3 @@ result4 = list(result4)
 # print contents of first five documents
 for i in range(5):
     print(result4[i])
-    
-client.close()
