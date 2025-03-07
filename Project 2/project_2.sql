@@ -210,3 +210,5 @@ SELECT
   ) AS reservation_json
 FROM reservation_data rd
 GROUP BY rd.reservation_id;
+
+\copy reservation_json TO 'C:/Users/janna/Documents/Merrimack MSDS/DSE6210/Project 1/sample_doc_json.json' WITH (FORMAT text, HEADER false);
