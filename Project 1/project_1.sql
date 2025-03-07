@@ -25,22 +25,22 @@ ALTER TABLE IF EXISTS flight_ms.itinerary_legs DROP CONSTRAINT IF EXISTS itinera
 
 ---Drop tables from the schema
 DROP TABLE IF EXISTS flight_ms.itinerary_legs CASCADE;
-DROP TABLE IF EXISTS flight_ms.legs;
-DROP TABLE IF EXISTS flight_ms.reservation_payments;
-DROP TABLE IF EXISTS flight_ms.payments;
-DROP TABLE IF EXISTS flight_ms.itinerary_reservations;
-DROP TABLE IF EXISTS flight_ms.flight_costs;
-DROP TABLE IF EXISTS flight_ms.flight_schedules;
-DROP TABLE IF EXISTS flight_ms.ref_calendar;
-DROP TABLE IF EXISTS flight_ms.airlines;
-DROP TABLE IF EXISTS flight_ms.travel_classes;
-DROP TABLE IF EXISTS flight_ms.ticket_codes;
-DROP TABLE IF EXISTS flight_ms.payment_statuses;
-DROP TABLE IF EXISTS flight_ms.reservation_statuses;
-DROP TABLE IF EXISTS flight_ms.airports;
-DROP TABLE IF EXISTS flight_ms.booking_agents;
-DROP TABLE IF EXISTS flight_ms.passengers;
-DROP TABLE IF EXISTS flight_ms.aircrafts;
+DROP TABLE IF EXISTS flight_ms.legs CASCADE;
+DROP TABLE IF EXISTS flight_ms.reservation_payments CASCADE;
+DROP TABLE IF EXISTS flight_ms.payments CASCADE;
+DROP TABLE IF EXISTS flight_ms.itinerary_reservations CASCADE;
+DROP TABLE IF EXISTS flight_ms.flight_costs CASCADE;
+DROP TABLE IF EXISTS flight_ms.flight_schedules CASCADE;
+DROP TABLE IF EXISTS flight_ms.ref_calendar CASCADE;
+DROP TABLE IF EXISTS flight_ms.airlines CASCADE;
+DROP TABLE IF EXISTS flight_ms.travel_classes CASCADE;
+DROP TABLE IF EXISTS flight_ms.ticket_codes CASCADE;
+DROP TABLE IF EXISTS flight_ms.payment_statuses CASCADE;
+DROP TABLE IF EXISTS flight_ms.reservation_statuses CASCADE;
+DROP TABLE IF EXISTS flight_ms.airports CASCADE;
+DROP TABLE IF EXISTS flight_ms.booking_agents CASCADE;
+DROP TABLE IF EXISTS flight_ms.passengers CASCADE;
+DROP TABLE IF EXISTS flight_ms.aircrafts CASCADE;
 
 DROP SCHEMA IF EXISTS flight_ms;
 
@@ -309,7 +309,8 @@ BEGIN
         -- FROM flight_ms.reservation_statuses
         -- WHERE reservation_status = 'Pending'
         -- LIMIT 1;
-    END IF;
+    ;
+	END IF;
     RETURN NEW;
 END;
 $$ LANGUAGE plpgsql;
@@ -349,6 +350,9 @@ CREATE TRIGGER check_duplicate_flight_reservations
 BEFORE INSERT ON flight_ms.itinerary_reservations
 FOR EACH ROW
 EXECUTE FUNCTION prevent_duplicate_flight_reservations();
+
+--- Drop trigger because it yields an error. Would need to be reworked to function properly
+DROP TRIGGER check_duplicate_flight_reservations ON flight_ms.itinerary_reservations;
 
 ---Insert statements
 -- Insert into ref_calendar (First week of February 2025)
@@ -637,4 +641,27 @@ END;
 $$ LANGUAGE plpgsql
 ;
 
+--- Create JSON file for Passenger 202 Itinerary
+SELECT json_build_object(
+    'passenger_id', MAX(passenger_id),
+    'reservation_id', MAX(reservation_id),
+    'legs', json_agg(
+        json_build_object(
+            'flight_number', flight_number,
+            'origin_airport', origin_airport,
+            'destination_airport', destination_airport,
+            'actual_departure_time', actual_departure_time,
+            'actual_arrival_time', actual_arrival_time,
+            'leg_id', leg_id,
+            'ticket_type', ticket_type,
+            'travel_class', travel_class
+        )
+    )
+) AS itinerary_json
+INTO TEMP TABLE temp_itinerary_json
+FROM itinerary
+WHERE passenger_id = 202
+GROUP BY passenger_id, reservation_id;
+
+\copy temp_itinerary_json TO 'C:/Users/janna/Documents/Merrimack MSDS/DSE6210/Project 1/itinerary_json.json' WITH (FORMAT text, HEADER false);
 

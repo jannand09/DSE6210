@@ -1,0 +1,270 @@
+{
+  "_id": "reservation_301",
+  "reservation_id": 301,
+  "date_reservation_made": "2025-02-01",
+  "number_in_party": 1,
+  "agent": {
+    "agent_id": 1,
+    "agent_name": "John Doe Travels",
+    "agent_details": "Premium Travel Agency"
+  },
+  "passenger": {
+    "passenger_id": 201,
+    "first_name": "Alice",
+    "last_name": "Smith",
+    "phone_number": "1234567890",
+    "email_address": "alice@example.com",
+    "address_lines": "123 Elm St",
+    "state_province_county": "NY",
+    "country": "USA",
+    "other_passenger_details": "Frequent flyer"
+  },
+  "reservation_status": {
+    "reservation_status_code": 1,
+    "reservation_status": "Confirmed"
+  },
+  "ticket_type": {
+    "ticket_type_code": 1,
+    "ticket_type": "One-Way"
+  },
+  "travel_class": {
+    "travel_class_code": 1,
+    "travel_class": "Economy"
+  },
+  "flights": [
+    {
+      "flight_number": 1001,
+      "airline": {
+        "airline_code": 1,
+        "airline_name": "Sky Airways"
+      },
+      "departure": {
+        "airport": {
+          "airport_code": 101,
+          "airport_name": "JFK International",
+          "airport_location": "New York"
+        },
+        "date_time": "2025-02-01T08:00:00"
+      },
+      "arrival": {
+        "airport": {
+          "airport_code": 102,
+          "airport_name": "LAX International",
+          "airport_location": "Los Angeles"
+        },
+        "date_time": "2025-02-01T11:00:00"
+      },
+      "costs": [
+        {
+          "aircraft_type_code": 1,
+          "valid_from_date": "2025-02-01",
+          "valid_to_date": "2025-02-05",
+          "flight_cost": 300
+        }
+      ],
+      "legs": [
+        {
+          "leg_id": 501,
+          "origin_airport": "JFK International",
+          "destination_airport": "LAX International",
+          "actual_departure_time": "2025-02-01T08:00:00",
+          "actual_arrival_time": "2025-02-01T11:00:00"
+        }
+      ]
+    }
+  ],
+  "payments": [
+    {
+      "payment_id": 401,
+      "payment_status": {
+        "payment_status_code": 1,
+        "payment_status": "Paid"
+      },
+      "payment_date": "2025-02-01",
+      "payment_amount": 300
+    }
+  ]
+},
+{
+  "_id": "reservation_302",
+  "reservation_id": 302,
+  "date_reservation_made": "2025-02-01",
+  "number_in_party": 2,
+  "agent": {
+    "agent_id": 1,
+    "agent_name": "John Doe Travels",
+    "agent_details": "Premium Travel Agency"
+  },
+  "passenger": [
+    {
+      "passenger_id": 202,
+      "first_name": "Bob",
+      "last_name": "Johnson",
+      "phone_number": "2345678901",
+      "email_address": "bob@example.com",
+      "address_lines": "456 Oak St",
+      "state_province_county": "CA",
+      "country": "USA",
+      "other_passenger_details": "Business traveler"
+    }
+  ],
+  "reservation_status": {
+    "reservation_status_code": 1,
+    "reservation_status": "Confirmed"
+  },
+  "ticket_type": {
+    "ticket_type_code": 2,
+    "ticket_type": "Round-Trip"
+  },
+  "travel_class": {
+    "travel_class_code": 2,
+    "travel_class": "Business"
+  },
+  "flights": [
+    {
+      "flight_number": 1001,
+      "airline": {
+        "airline_code": 1,
+        "airline_name": "Sky Airways"
+      },
+      "departure": {
+        "airport": {
+          "airport_code": 101,
+          "airport_name": "JFK International",
+          "airport_location": "New York"
+        },
+        "date_time": "2025-02-01T08:00:00"
+      },
+      "arrival": {
+        "airport": {
+          "airport_code": 102,
+          "airport_name": "LAX International",
+          "airport_location": "Los Angeles"
+        },
+        "date_time": "2025-02-01T11:00:00"
+      },
+      "costs": [
+        {
+          "aircraft_type_code": 1,
+          "valid_from_date": "2025-02-01",
+          "valid_to_date": "2025-02-05",
+          "flight_cost": 300
+        }
+      ],
+      "legs": [
+        {
+          "leg_id": 501,
+          "origin_airport": "JFK International",
+          "destination_airport": "LAX International",
+          "actual_departure_time": "2025-02-01T08:00:00",
+          "actual_arrival_time": "2025-02-01T11:00:00"
+        },
+        {
+          "leg_id": 502,
+          "origin_airport": "LAX International",
+          "destination_airport": "O'Hare International",
+          "actual_departure_time": "2025-02-02T09:00:00",
+          "actual_arrival_time": "2025-02-02T12:00:00"
+        }
+      ]
+    }
+  ],
+  "payments": [
+    {
+      "payment_id": 402,
+      "payment_status": {
+        "payment_status_code": 1,
+        "payment_status": "Paid"
+      },
+      "payment_date": "2025-02-02",
+      "payment_amount": 350
+    }
+  ]
+},
+{
+  "_id": "reservation_303",
+  "reservation_id": 303,
+  "date_reservation_made": "2025-02-02",
+  "number_in_party": 1,
+  "agent": {
+    "agent_id": 2,
+    "agent_name": "Elite Bookings",
+    "agent_details": "VIP Travel Services"
+  },
+  "passenger": {
+    "passenger_id": 203,
+    "first_name": "Charlie",
+    "last_name": "Davis",
+    "phone_number": "3456789012",
+    "email_address": "charlie@example.com",
+    "address_lines": "789 Pine St",
+    "state_province_county": "IL",
+    "country": "USA",
+    "other_passenger_details": "New customer"
+  },
+  "reservation_status": {
+    "reservation_status_code": 1,
+    "reservation_status": "Confirmed"
+  },
+  "ticket_type": {
+    "ticket_type_code": 1,
+    "ticket_type": "One-Way"
+  },
+  "travel_class": {
+    "travel_class_code": 1,
+    "travel_class": "Economy"
+  },
+  "flights": [
+    {
+      "flight_number": 1002,
+      "airline": {
+        "airline_code": 2,
+        "airline_name": "Global Flights"
+      },
+      "departure": {
+        "airport": {
+          "airport_code": 102,
+          "airport_name": "LAX International",
+          "airport_location": "Los Angeles"
+        },
+        "date_time": "2025-02-02T09:00:00"
+      },
+      "arrival": {
+        "airport": {
+          "airport_code": 103,
+          "airport_name": "O'Hare International",
+          "airport_location": "Chicago"
+        },
+        "date_time": "2025-02-02T12:00:00"
+      },
+      "costs": [
+        {
+          "aircraft_type_code": 2,
+          "valid_from_date": "2025-02-01",
+          "valid_to_date": "2025-02-05",
+          "flight_cost": 350
+        }
+      ],
+      "legs": [
+        {
+          "leg_id": 502,
+          "origin_airport": "LAX International",
+          "destination_airport": "O'Hare International",
+          "actual_departure_time": "2025-02-02T09:00:00",
+          "actual_arrival_time": "2025-02-02T12:00:00"
+        }
+      ]
+    }
+  ],
+  "payments": [
+    {
+      "payment_id": 403,
+      "payment_status": {
+        "payment_status_code": 1,
+        "payment_status": "Paid"
+      },
+      "payment_date": "2025-02-03",
+      "payment_amount": 400
+    }
+  ]
+}
